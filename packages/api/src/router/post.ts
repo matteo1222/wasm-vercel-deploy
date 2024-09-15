@@ -1,4 +1,5 @@
 import type { TRPCRouterRecord } from "@trpc/server";
+import { Document } from "llamaindex";
 import { z } from "zod";
 
 import { desc, eq } from "@acme/db";
@@ -36,5 +37,9 @@ export const postRouter = {
 
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
     return ctx.db.delete(Post).where(eq(Post.id, input));
+  }),
+
+  vector: protectedProcedure.query(({ ctx }) => {
+    return new Document();
   }),
 } satisfies TRPCRouterRecord;
